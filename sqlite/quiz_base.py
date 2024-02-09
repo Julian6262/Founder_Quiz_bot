@@ -22,12 +22,6 @@ async def update_quiz_index(user_id, index):
         await db.commit()
 
 
-async def update_quiz_statistic(user_id, index):
-    async with aiosqlite.connect(DB_NAME) as db:
-        await db.execute('UPDATE quiz_state SET statistic = ? WHERE user_id = ?', (index, user_id))
-        await db.commit()
-
-
 async def update_statistic(user_id):
     async with aiosqlite.connect(DB_NAME) as db:
         await db.execute('UPDATE quiz_state SET statistic = temp_statistic WHERE user_id = ?', (user_id,))

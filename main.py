@@ -5,7 +5,6 @@ from aiogram.enums import ParseMode
 
 from handlers.callbacks import callback_router
 from handlers.user_private import user_private_router
-from sqlite.quiz_base import create_table
 
 # logging.basicConfig(level=logging.INFO)
 

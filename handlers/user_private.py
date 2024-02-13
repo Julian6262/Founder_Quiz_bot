@@ -1,8 +1,8 @@
 from aiogram import types, Router, F
 from aiogram.filters import Command
-from keyboards.reply import start_keyboard, generate_options_keyboard
-from quiz_data.quiz_data import quiz_data
-from sqlite.quiz_base import get_quiz_index, update_quiz_index, get_quiz_statistic, set_new_user, new_temp_statistic
+from reply import start_keyboard, generate_options_keyboard
+from quiz_base import quiz_data
+from service import get_quiz_statistic, get_quiz_index, new_statistic
 
 user_private_router = Router()
 
@@ -36,16 +36,13 @@ async def get_question(message, user_id):
 
 async def new_quiz(message):
     user_id = message.from_user.id
-    current_question_index = 0
-    await update_quiz_index(user_id, current_question_index)
-    await new_temp_statistic(message.from_user.id)
+    await new_statistic(user_id)
     await get_question(message, user_id)
 
 
 @user_private_router.message(Command("start"))
 async def cmd_start(message: types.Message):
     await message.answer("Добро пожаловать в квиз!", reply_markup=start_keyboard)
-    await set_new_user(message.from_user.id)
 
 
 @user_private_router.message(F.text == "Начать игру")

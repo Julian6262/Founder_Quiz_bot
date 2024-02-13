@@ -10,12 +10,6 @@ async def create_table():
         await db.commit()
 
 
-async def set_new_user(user_id):
-    async with aiosqlite.connect(DB_NAME) as db:
-        await db.execute('INSERT OR IGNORE INTO quiz_state (user_id) VALUES (?)', (user_id,))
-        await db.commit()
-
-
 async def update_quiz_index(user_id, index):
     async with aiosqlite.connect(DB_NAME) as db:
         await db.execute('UPDATE quiz_state SET question_index = ? WHERE user_id = ?', (index, user_id))
@@ -35,9 +29,11 @@ async def update_temp_statistic(user_id, index):
         await db.commit()
 
 
-async def new_temp_statistic(user_id):
+async def new_statistic(user_id):
     async with aiosqlite.connect(DB_NAME) as db:
-        await db.execute('UPDATE quiz_state SET temp_statistic = ? WHERE user_id = ?', ('', user_id))
+        await db.execute(
+            '''INSERT INTO quiz_state (user_id, question_index, temp_statistic) VALUES(?, 0, '')
+             ON CONFLICT(user_id) DO UPDATE SET question_index=0, temp_statistic=?''', (user_id, ''))
         await db.commit()
 
 

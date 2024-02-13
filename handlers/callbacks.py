@@ -1,7 +1,7 @@
 from aiogram import Router, types
 from handlers.user_private import get_question
-from quiz_data.quiz_data import quiz_data
-from sqlite.quiz_base import get_quiz_index, update_quiz_index, update_temp_statistic, update_statistic
+from quiz_base import quiz_data
+from service import get_quiz_index, update_quiz_index, update_temp_statistic, update_statistic
 
 callback_router = Router()
 

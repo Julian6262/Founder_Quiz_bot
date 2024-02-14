@@ -1,10 +1,12 @@
 import asyncio
-# import logging
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
-
 from handlers.callbacks import callback_router
 from handlers.user_private import user_private_router
+from service import select_from_questions
+
+# from service import create_tables
+# import logging
 
 # logging.basicConfig(level=logging.INFO)
 
@@ -16,7 +18,8 @@ dp.include_routers(user_private_router, callback_router)
 
 
 async def main():
-    # await create_table()
+    # await create_tables()
+    await select_from_questions()
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 

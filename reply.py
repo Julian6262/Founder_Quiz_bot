@@ -12,7 +12,7 @@ def generate_options_keyboard(answer_options, right_answer):
     builder = InlineKeyboardBuilder()
     for count, option in enumerate(answer_options):
         builder.add(InlineKeyboardButton(
-            text=option, callback_data=f"{count} {"right_answer" if option == right_answer else "wrong_answer"}")
+            text=option, callback_data=f'{count} {"right_answer" if option == right_answer else "wrong_answer"}')
         )
     builder.adjust(1)
     return builder.as_markup()

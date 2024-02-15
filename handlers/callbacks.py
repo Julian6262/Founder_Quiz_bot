@@ -1,6 +1,6 @@
 from aiogram import Router, types
-from service import (get_quiz_index, update_quiz_index, update_temp_statistic,
-                     update_statistic, get_question, quiz_questions, get_statistic)
+from service import (get_quiz_index, update_quiz_index, get_question, quiz_questions, show_result, update_result,
+                     update_temp_result)
 
 callback_router = Router()
 
@@ -25,14 +25,12 @@ async def answer(callback: types.CallbackQuery):
         await callback.message.answer(
             f"❌ Неправильно. Правильный ответ: {quiz_questions[current_question_index][1][correct_option]}")
 
-    current_question_index += 1
-    await update_quiz_index(callback.from_user.id, current_question_index)
+    await update_quiz_index(callback.from_user.id)
+    await update_temp_result(callback.from_user.id, index, 1 if callback_answer == "right_answer" else 0)
 
-    await update_temp_statistic(callback.from_user.id, index, 1 if callback_answer == "right_answer" else 0)
-
-    if current_question_index < len(quiz_questions):
+    if current_question_index < len(quiz_questions) - 1:
         await get_question(callback.message, callback.from_user.id)
     else:
-        await update_statistic(callback.from_user.id)
+        await update_result(callback.from_user.id)
         await callback.message.answer("Это был последний вопрос. Квиз завершен!")
-        await get_statistic(callback.message, callback.from_user.id, statistic=False)
+        await show_result(callback.message, callback.from_user.id, statistic=False)
